@@ -1,14 +1,20 @@
 package com.example.rescylerview.ui
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Toast
+
+import androidx.core.content.ContextCompat
+
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rescylerview.R
 import com.example.rescylerview.data.Match
+import com.example.rescylerview.databinding.ItemMatchBinding
 
-class MatchAdapter(val list:List<Match>): RecyclerView.Adapter<MatchAdapter.MatchViewHolder>() {
+
+class MatchAdapter(private var list:List<Match>,private val listener: MatchInteractionListener): RecyclerView.Adapter<MatchAdapter.MatchViewHolder>() {
 
 
 
@@ -21,20 +27,45 @@ class MatchAdapter(val list:List<Match>): RecyclerView.Adapter<MatchAdapter.Matc
 
 
     override fun onBindViewHolder(holder: MatchViewHolder, position: Int) {
+
+
         val currentItem=list[position]
-         holder.apply {
-         textNameteam1.text=currentItem.homeTeamName
-         textNameteam2.text=currentItem.awayTeamName
-         textStedioum.text=currentItem.stadium
-         textScoreteam1.text=currentItem.homeTeamGoals
-         textScoreteam2.text=currentItem.awayTeamGoals
-         textYear.text=currentItem.year
-     }
+         holder.binding.apply {
+  
+            textName1.text=currentItem.homeTeamName
+            textName2.text=currentItem.awayTeamName
+            textStedioum.text=currentItem.stadium
+             scoreTeam1.text=currentItem.homeTeamGoals
+             scoreTeam2.text=currentItem.awayTeamGoals
+             textYear.text=currentItem.year
+
+
+             if (currentItem.homeTeamGoals>currentItem.awayTeamGoals){
+                 scoreTeam1.setTextColor(ContextCompat.getColor(holder.binding.root.context,R.color.green))
+                 scoreTeam2.setTextColor(ContextCompat.getColor(holder.binding.root.context,R.color.white))
+             }else    if (currentItem.homeTeamGoals<currentItem.awayTeamGoals){
+                 scoreTeam2.setTextColor(ContextCompat.getColor(holder.binding.root.context,R.color.green))
+                 scoreTeam1.setTextColor(ContextCompat.getColor(holder.binding.root.context,R.color.white))
+             }else{
+                 scoreTeam1.setTextColor(ContextCompat.getColor(holder.binding.root.context,R.color.white))
+                 scoreTeam2.setTextColor(ContextCompat.getColor(holder.binding.root.context,R.color.white))
+             }
+             textName1.setOnClickListener { Toast.makeText(textName1.context,currentItem.homeTeamName,Toast.LENGTH_LONG).show() }
+             textName2.setOnClickListener { Toast.makeText(textName2.context,currentItem.awayTeamName,Toast.LENGTH_LONG).show() }
+             iconDelete.setOnClickListener { listener.deleteItemAtIndex(position) }
+             root.setOnClickListener{
+             listener.onClickItem(currentItem)
+             }
+     }}
+       fun setData(newList:List<Match>){
+          list=newList
+          notifyDataSetChanged()
+       }
 
 
 
 
-    }
+
 
 
 
@@ -47,12 +78,7 @@ class MatchAdapter(val list:List<Match>): RecyclerView.Adapter<MatchAdapter.Matc
 
 
     class MatchViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView) {
-        val textNameteam1=itemView.findViewById<TextView>(R.id.text_Name1)
-        val textNameteam2=itemView.findViewById<TextView>(R.id.text_Name2)
-        val textScoreteam1=itemView.findViewById<TextView>(R.id.score_team1)
-        val textScoreteam2=itemView.findViewById<TextView>(R.id.score_team2)
-        val textYear=itemView.findViewById<TextView>(R.id.text_year)
-        val textStedioum=itemView.findViewById<TextView>(R.id.text_stedioum)
-
+        val binding=ItemMatchBinding.bind(itemView)
+     
     }
 }

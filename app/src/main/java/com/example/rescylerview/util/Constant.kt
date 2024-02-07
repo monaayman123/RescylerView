@@ -1,7 +1,7 @@
 package com.example.rescylerview.util
 
 object Constant {
-
+  const val KEY_MATCH="match"
     object ColumnIndex{
         const val YEAR=0
         const val STADIUM=3
