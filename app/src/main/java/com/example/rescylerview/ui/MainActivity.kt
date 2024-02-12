@@ -48,7 +48,7 @@ import java.io.InputStreamReader
                     year = "2018",
                     stadium = "Lazhaiki"
                 )
-                DataManager.addMatch(finalMatch)
+                DataManager.addMatchAtIndex(1,finalMatch)
                 matchAdapter.setData(DataManager.matches)
             }
 

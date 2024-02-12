@@ -6,12 +6,14 @@ object DataManager {
       private val matchList= mutableListOf<Match>()
       private var matchIndex=1
       val matches:List<Match>
-          get() = matchList.reversed()
+          get() = matchList.toList()
     fun deleteMatch(index:Int){
         matchList.removeAt(index)
     }
 
-
+    fun addMatchAtIndex(index: Int,match: Match){
+        matchList.add(1,match)
+    }
     fun addMatch(match: Match){
      matchList.add(match)
     }

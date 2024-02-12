@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rescylerview.R
@@ -58,8 +59,11 @@ class MatchAdapter(private var list:List<Match>,private val listener: MatchInter
              }
      }}
        fun setData(newList:List<Match>){
-          list=newList
-          notifyDataSetChanged()
+           val differutil=DiffUtil.calculateDiff(MatchDifferentUtility(list,newList))
+           list=newList
+           differutil.dispatchUpdatesTo(this)
+//          list=newList
+//          notifyDataSetChanged()
        }
 
 
